@@ -75,7 +75,7 @@ namespace ReactMaaserTrackerMUI_Starter.Web.Controllers
         public Object GetTotalIncomeandMaaser()
         {
             var repo = new MaaserRepository(_connectionString);
-            Object totalAmounts =  repo.GetTotalIncomeandMaaser();
+            Object totalAmounts = repo.GetTotalIncomeandMaaser();
             return totalAmounts;
         }
     }
