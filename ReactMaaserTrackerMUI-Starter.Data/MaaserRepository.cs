@@ -20,7 +20,8 @@ namespace ReactMaaserTrackerMUI_Starter.Data
         public List<Income> GetIncomes()
         {
             var context = new DataContext(_connectionString);
-            return context.Incomes.ToList();
+            var sourceNames = context.Sources.Select(s => s.Name).ToList();
+            return context.Incomes.Where(i => sourceNames.Contains(i.Source)).ToList();
         }
         public List<Object> GetSources()
         {
