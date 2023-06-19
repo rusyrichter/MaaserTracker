@@ -22,9 +22,9 @@ const IncomePage = () => {
     }, [])
 
 
-    const groupedIncomes = sources.map(s => ({       
+    const groupedIncomes = sources.map(s => ({
         source: s.name,
-        incomes: incomes.filter(s => s.Name === s.name)
+        incomes: incomes.filter(i => i.source === s.name)
     }));
 
   return (
