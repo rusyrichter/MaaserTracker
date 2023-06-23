@@ -20,8 +20,14 @@ namespace ReactMaaserTrackerMUI_Starter.Data
         public List<Income> GetIncomes()
         {
             var context = new DataContext(_connectionString);
-            var sourceNames = context.Sources.Select(s => s.Name).ToList();
-            return context.Incomes.Where(i => sourceNames.Contains(i.Source)).ToList();
+            return context.Incomes.Include(i => i.Source).ToList();
+        }
+
+        public List<Source> GetSourcedIncomes()
+        {
+            var context = new DataContext(_connectionString);
+            return context.Sources.
+                Include(i => i.IncomePayments).ToList();
         }
         public List<Object> GetSources()
         {
@@ -30,7 +36,7 @@ namespace ReactMaaserTrackerMUI_Starter.Data
             var uniqueSources = new List<object>(); 
             foreach(var source in sources)
             {
-                if (!uniqueSources.Contains(source.Name))
+                if (!uniqueSources.Contains(source.Id))
                 {
                     uniqueSources.Add(source);
                 }
@@ -52,7 +58,7 @@ namespace ReactMaaserTrackerMUI_Starter.Data
         public void Delete(Source source)
         {
             var context = new DataContext(_connectionString);
-            context.Database.ExecuteSqlInterpolated(@$"delete from Sources Where Name = {source.Name}");
+            context.Database.ExecuteSqlInterpolated(@$"delete from Sources Where Id = {source.Id}");
             context.SaveChanges();
         }
         public void AddSource(Source source)

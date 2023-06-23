@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { Checkbox, Container, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material';
+import AddIncomePage from './AddIncomePage';
 
 const IncomePage = () => {
 
     const [groupBySource, setGroupBySource] = useState(false);
     const [incomes, setIncomes] = useState([]);
-    const [sources, setSources] = useState([]);
+   
 
 
 
@@ -15,19 +16,24 @@ const IncomePage = () => {
         const loadConfirmed = async () => {
             const { data } = await axios.get('/api/Maaser/getIncomes');
             setIncomes(data);
-            const { data: sources } = await axios.get('/api/Maaser/getSources');
-            setSources(sources);
-        }
+        };
         loadConfirmed();
-    }, [])
+    }, []);
 
-
-    const groupedIncomes = sources
-        .filter(s => incomes.some(i => i.source === s.name))
-        .map(s => ({
-        source: s.name,
-        incomes: incomes.filter(i => i.source === s.name)
-    }));
+    const groupedIncomes = () => {
+        const result = [];
+        for (let income of incomes) {
+            const currentName = income.source.name;
+            const exists = result.find(p => p.source === currentName);
+            if (!exists) {
+                result.push({ source: currentName, incomes: [income] })
+            } else {
+                exists.incomes.push(income);
+            }
+        }
+        return result;
+    }
+      
 
     return (
         <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 3 }}>
@@ -61,7 +67,7 @@ const IncomePage = () => {
                             {incomes.map((income) => (
                                 <TableRow key={income.id}>
                                     <TableCell component="th" scope="row" sx={{ fontSize: '18px' }}>
-                                        {income.source}
+                                        {income.source.name}
                                     </TableCell>
                                     <TableCell align="right" sx={{ fontSize: '18px' }}>${income.amount}</TableCell>
                                     <TableCell align="right" sx={{ fontSize: '18px' }}>{dayjs(income.date).format('YYYY-MM-DD')}</TableCell>
@@ -71,7 +77,7 @@ const IncomePage = () => {
                     </Table>
                 </TableContainer>
             ) : (
-                groupedIncomes.map(({ source, incomes }) => (
+                groupedIncomes().map(({ source, incomes }) => (
                     <div key={source} sx={{ width: '80%', maxWidth: '80%' }}>
                         <Typography variant="h5" gutterBottom component="div" sx={{ mt: 5 }}>
                             {source}
@@ -89,10 +95,10 @@ const IncomePage = () => {
                                     {incomes.map((income) => (
                                         <TableRow key={income.id}>
                                             <TableCell component="th" scope="row" sx={{ fontSize: '18px' }}>
-                                                {income.source}
+                                                {income.source.name}
                                             </TableCell>
                                             <TableCell align="right" sx={{ fontSize: '18px' }}>${income.amount}</TableCell>
-                                            <TableCell align="right" sx={{ fontSize: '18px' }}>{income.date}</TableCell>
+                                            <TableCell align="right" sx={{ fontSize: '18px' }}>{dayjs(income.date).format('YYYY-MM-DD')}</TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReactMaaserTrackerMUI_Starter.Data;
 
@@ -11,9 +12,10 @@ using ReactMaaserTrackerMUI_Starter.Data;
 namespace ReactMaaserTrackerMUI_Starter.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230622231556_Intial")]
+    partial class Intial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,8 +42,6 @@ namespace ReactMaaserTrackerMUI_Starter.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SourceId");
 
                     b.ToTable("Incomes");
                 });
@@ -82,17 +82,6 @@ namespace ReactMaaserTrackerMUI_Starter.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Sources");
-                });
-
-            modelBuilder.Entity("ReactMaaserTrackerMUI_Starter.Data.Income", b =>
-                {
-                    b.HasOne("ReactMaaserTrackerMUI_Starter.Data.Source", "Source")
-                        .WithMany()
-                        .HasForeignKey("SourceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Source");
                 });
 #pragma warning restore 612, 618
         }

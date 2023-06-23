@@ -78,5 +78,12 @@ namespace ReactMaaserTrackerMUI_Starter.Web.Controllers
             Object totalAmounts = repo.GetTotalIncomeandMaaser();
             return totalAmounts;
         }
+        [HttpGet]
+        [Route("getSourcedIncomes")]
+        public List<Source> GetSourcedIncomes()
+        {
+            var repo = new MaaserRepository(_connectionString);
+            return repo.GetSourcedIncomes();
+        }
     }
 }

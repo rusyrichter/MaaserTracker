@@ -14,13 +14,12 @@ const AddIncomePage = () => {
         const onLoadConfirmed = async () => {
             const { data } = await axios.get('/api/Maaser/getSources');
             setSources(data);
-            console.log(data);
         }
         onLoadConfirmed();
     }, [])
 
     const onSubmitClick = async () => {
-        await axios.post('/api/Maaser/addIncome', { selectedDate, amount, Source: source.label })
+        await axios.post('/api/Maaser/addIncome', { selectedDate, amount, SourceId: source.id })
         setAmount('');
         setSource(null);
     }

@@ -35,7 +35,7 @@ const ManageSourcesPage = () => {
             setSources(sources.map(source => source === editingSource ? selectedSource : source));
 
         } else {
-            await axios.post('/api/Maaser/addSource', { Name: selectedSource.name })
+            await axios.post('/api/Maaser/addSource', { Id: selectedSource.id, Name: selectedSource.name })
             setSources([...sources, selectedSource]);
         }
         handleClose();
@@ -43,7 +43,7 @@ const ManageSourcesPage = () => {
 
     const handleDelete = async (sourceToDelete) => {
         console.log(sourceToDelete)
-        await axios.post('/api/Maaser/deleteSource', { Name: sourceToDelete.name })
+        await axios.post('/api/Maaser/deleteSource', { Id: sourceToDelete.id })
         setSources(sources.filter(source => source !== sourceToDelete));
     };
 
