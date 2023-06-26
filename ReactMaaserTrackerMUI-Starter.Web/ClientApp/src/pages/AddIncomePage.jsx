@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Container, TextField, Button, Autocomplete, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const AddIncomePage = () => {
+    const navigate = useNavigate();
+
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [sources, setSources] = useState([]);
-    const [amount, setAmount] = useState();
-    const [source, setSource] = useState()
+    const [amount, setAmount] = useState(null);
+    const [source, setSource] = useState(null)
 
 
     useEffect(() => {
@@ -20,8 +23,7 @@ const AddIncomePage = () => {
 
     const onSubmitClick = async () => {
         await axios.post('/api/Maaser/addIncome', { selectedDate, amount, SourceId: source.id })
-        setAmount('');
-        setSource(null);
+        navigate('/income');
     }
     const selectedSources = sources.map(s => ({
         ...s,
@@ -34,7 +36,6 @@ const AddIncomePage = () => {
                 Add Income
             </Typography>
             <Autocomplete
-                value={source}
                 onChange={(e, newSource) => setSource(newSource)}
                 options={selectedSources}
                 getOptionLabel={(option) => option.label}
@@ -44,7 +45,6 @@ const AddIncomePage = () => {
             />
             <TextField
                 onChange={(e, amount) => setAmount(e.target.value)}
-                value={amount}
                 label="Amount"
                 variant="outlined"
                 type="number"

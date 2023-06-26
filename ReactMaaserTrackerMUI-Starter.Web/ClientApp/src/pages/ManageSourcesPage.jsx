@@ -6,7 +6,7 @@ const ManageSourcesPage = () => {
     const [sources, setSources] = useState([]);
     const [open, setOpen] = useState(false);
     const [selectedSource, setSelectedSource] = useState('');
-    const [editingSource, setEditingSource] = useState(null);
+    const [editingSource, setEditingSource] = useState('');
 
     useEffect(() => {
         const onLoading = async () => {
@@ -25,7 +25,7 @@ const ManageSourcesPage = () => {
     const handleClose = () => {
         setOpen(false);
         setSelectedSource('');
-        setEditingSource(null);
+        setEditingSource('');
     };
 
     const handleAddEdit = async () => {
@@ -35,7 +35,7 @@ const ManageSourcesPage = () => {
             setSources(sources.map(source => source === editingSource ? selectedSource : source));
 
         } else {
-            await axios.post('/api/Maaser/addSource', { Id: selectedSource.id, Name: selectedSource.name })
+            await axios.post('/api/Maaser/addSource', {Name: selectedSource.name })
             setSources([...sources, selectedSource]);
         }
         handleClose();
