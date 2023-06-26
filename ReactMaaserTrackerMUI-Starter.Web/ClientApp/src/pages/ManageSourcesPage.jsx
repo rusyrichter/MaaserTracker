@@ -42,7 +42,6 @@ const ManageSourcesPage = () => {
     };
 
     const handleDelete = async (sourceToDelete) => {
-        console.log(sourceToDelete)
         await axios.post('/api/Maaser/deleteSource', { Id: sourceToDelete.id })
         setSources(sources.filter(source => source !== sourceToDelete));
     };
